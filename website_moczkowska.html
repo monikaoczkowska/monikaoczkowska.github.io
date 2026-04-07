@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monika Oczkowska</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #b85c38;
+      --accent-light: #f5ede8;
+      --black: #1a1a18;
+      --muted: #6b6b65;
+      --border: #e2dfd8;
+      --bg: #faf9f7;
+      --white: #ffffff;
+      --sidebar-w: 260px;
+      --serif: 'EB Garamond', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 3rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-name {
+      font-family: var(--serif);
+      font-size: 1.75rem;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.35rem;
+    }
+
+    .sidebar-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+
+    /* Photo slot — hidden by default.
+       To add a photo later:
+         1. Change "display: none" to "display: block" below
+         2. Save your photo as photo.jpg in the same folder as index.html */
+    .photo-slot {
+      display: none;
+      width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: 2px;
+      background: var(--accent-light);
+      margin-bottom: 1.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    nav a {
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 0;
+      transition: color 0.2s;
+      width: fit-content;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    .sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .sidebar-links a:hover { color: var(--accent); }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 4rem 4rem 6rem;
+      max-width: 960px;
+    }
+
+    section { margin-bottom: 1rem; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ABOUT ── */
+    .about-bio {
+      font-size: 0.97rem;
+      color: #3d3d38;
+      line-height: 1.75;
+      max-width: 800px;
+      margin-bottom: 1rem;
+    }
+
+    .cv-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      padding: 7px 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .cv-link:hover { background: var(--accent); color: var(--white); }
+
+    /* ── PAPERS ── */
+    .paper {
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .paper:first-child { border-top: 1px solid var(--border); }
+
+    .paper-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .paper-status {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    .status-published { background: var(--accent-light); color: var(--accent); }
+    .status-working   { background: #eef2f7; color: #4a6fa5; }
+    .status-progress  { background: #f0f5eb; color: #4a7236; }
+
+    .paper-venue {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .paper h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+
+    .paper h3 a {
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .paper h3 a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .paper .coauthors {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract-toggle {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 3px 10px;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  background: none;
+  font-family: var(--sans);
+  transition: all 0.2s;
+}
+
+.abstract-toggle:hover {
+  background: var(--muted);
+  color: white;
+  border-color: var(--muted);
+}
+
+    .abstract {
+      display: none;
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: #4a4a45;
+      line-height: 1.75;
+      border-left: 2px solid var(--border);
+      padding-left: 1rem;
+    }
+
+    .abstract.open { display: block; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-left: var(--sidebar-w);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      body { flex-direction: column; }
+
+      aside {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 2rem 1.5rem 1.5rem;
+      }
+
+      .sidebar-links { flex-direction: row; flex-wrap: wrap; padding-top: 1rem; }
+
+      main, footer { margin-left: 0; padding: 2rem 1.5rem 4rem; }
+    }
+	
+	.policy-brief-btn {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 3px 10px;
+  margin-bottom: 0.4rem;
+  transition: all 0.2s;
+}
+
+.policy-brief-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+.replication-btn {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: #4a6fa5;
+  border: 1px solid #4a6fa5;
+  border-radius: 2px;
+  padding: 3px 10px;
+  margin-bottom: 0.4rem;
+  transition: all 0.2s;
+}
+
+.replication-btn:hover {
+  background: #4a6fa5;
+  color: white;
+}
+.iza-btn {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: #6b7c3f;
+  border: 1px solid #6b7c3f;
+  border-radius: 2px;
+  padding: 3px 10px;
+  margin-bottom: 0.4rem;
+  transition: all 0.2s;
+}
+
+.iza-btn:hover {
+  background: #6b7c3f;
+  color: white;
+}
+
+.upcoming-wrap {
+  margin-top: 1.5rem;
+}
+
+.upcoming-label {
+  display: inline-block;
+  font-size: 0.73rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  background: #e8f0f7;
+  color: #2a5a8c;
+  margin-bottom: 0.75rem;
+}
+
+.upcoming-list {
+  list-style: disc;
+  padding-left: 1.2rem;
+  font-size: 0.88rem;
+  color: #4a4a45;
+  line-height: 1.7;
+}
+.upcoming-list a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.upcoming-list a:hover {
+  text-decoration: underline;
+}
+  </style>
+</head>
+<body>
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside>
+    <p class="sidebar-name">Monika<br>Oczkowska</p>
+    <p class="sidebar-title">Research Economist</p>
+    <!-- EDIT: change "Researcher" to your actual title, e.g. "PhD Economist" -->
+
+    <!-- PHOTO SLOT (hidden for now)
+         When you have a photo ready:
+           1. Find ".photo-slot { display: none" in the <style> block above and change "none" to "block"
+           2. Save your photo as photo.jpg in the same folder as this file -->
+    <div class="photo-slot">
+      <img src="photo.jpg" alt="Monika Oczkowska" />
+    </div>
+
+    <nav>
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+    </nav>
+
+    <div class="sidebar-links">
+      <!-- EDIT: replace with your email address -->
+      <a href="mailto:your.email@example.com">m.a.oczkowska@gmail.com</a>
+      <!-- EDIT: replace 0000-0000-0000-0000 with your actual ORCID -->
+      <a href="https://orcid.org/0000-0001-7252-838X" target="_blank">ORCID</a>
+      <!-- EDIT: replace with your LinkedIn URL, or delete this line if not needed -->
+      <a href="https://www.linkedin.com/in/monika-oczkowska-b70a00118/" target="_blank">LinkedIn</a>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-header"><h2>About</h2></div>
+      <p class="about-bio">
+        <!-- EDIT: write 3–4 sentences about yourself here -->
+        I am a Research Economist interested in the topics of gender, ageing and labour market. Currently, I hold a Research Assistant position at the Warsaw School of Economics SGH. In years 2012-2025 I worked as an Economist, and later as a Senior Economist, in the Centre for Economic Analysis CenEA, located in Szczecin, PL. 
+      </p>
+	  <p class="about-bio">
+        <!-- EDIT: write 3–4 sentences about yourself here -->
+        Due to my longstanding involvement in the management of the Survey of Health, Ageing and Retirement (SHARE) in Poland, the bulk part of my research is based on the related dataset. However, I also worked with the census data available in IPUMS International, data collected in the EU-SILC, Household Budget Surveys, Labour Force Surveys, Time Use Surveys, Gender and Generation Survey, FROGEE Survey on gender-based abuse in CEE countries. 
+      </p>
+      <!-- EDIT: replace "cv_MO.pdf" with your actual CV filename once uploaded to GitHub -->
+      <a href="CV_moczkowska.pdf" class="cv-link">&#8595; Curriculum Vitae</a>
+	  <!-- UPCOMING PRESENTATIONS — remove style="display:none" to show -->
+<div class="upcoming-wrap" >
+  <div class="upcoming-label">Upcoming Presentations</div>
+  <ul class="upcoming-list">
+  <li>May 2026: <a href="https://www.worldbank.org/en/events/2026/05/14/mend-the-gap-in-economic-opportunities-in-europe-and-central-asia-second-edition" target="_blank">Mend the Gap in Economic Opportunities</a>, Rome (poster)</li>
+  <li>June 2026: <a href="https://epc2026.eaps.nl/" target="_blank">European Population Conference</a>, Bologna (poster)</li>
+  <li>August 2026: <a href="https://www.europeansociology.org/conference/2026" target="_blank">17th ESA Conference</a>, Warsaw</li>
+  <li>January 2027: <a href="https://ifb.bayern.de/aktuelles/" target="_blank">Kolloquium</a> State Institute for Family Research (ifb), Uni Bamberg</li>
+  </ul>
+</div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research">
+      <div class="section-header"><h2>Research</h2></div>
+
+      <!-- PAPER 1 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Journal of the Economics of Ageing, 2025</span>
+        </div>
+        <h3><a href="https://doi.org/10.1016/j.jeoa.2025.100551" target="_blank">Income and well-being in old age: the role of local contextual factors</a></h3>
+        <p class="coauthors">with M. Myck and E. Kulati</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://freepolicybriefs.org/2025/10/13/income-well-being-poland/" target="_blank" class="policy-brief-btn">Policy Brief</a>
+		<a href="https://zenodo.org/records/14961697" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          While the role of local contextual factors as determinants of well-being has been broadly acknowledged, the literature has focused primarily on identification of individual level determinants. Using a unique dataset linking regional and individual-level information we investigate the association of well-being and local conditions among a sample of Polish individuals aged 50 and over. The results confirm high correlation of well-being with income, and we show that this correlation grows with the quality of local conditions. Similarly, a change in the composite measure of the latter is positively associated with well-being only for high income respondents. The findings highlight a particular set of policy challenges from the point of view of old age poverty and area-based social exclusion. They offer support for targeted financial transfers, and call for improvements in local conditions, in particular in accessibility to public services for low-income older individuals.
+        </div>
+      </div>
+	  
+	        <!-- PAPER 2 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Applied Economics, 2024</span>
+        </div>
+        <h3><a href="https://doi.org/10.1080/00036846.2024.2364109" target="_blank">Homeownership and the perception of material security in old age</a></h3>
+        <p class="coauthors">with C. Garten and M. Myck</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://freepolicybriefs.org/2022/11/06/homeownership-material-security/" target="_blank" class="policy-brief-btn">Policy Brief</a>
+		<a href="https://docs.iza.org/dp15495.pdf" target="_blank" class="iza-btn">IZA DP 15495</a>
+		<a href="https://zenodo.org/records/10886882" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Homeownership has been shown to be related to various aspects of well-being, although both the causal nature of this relationship and the possible channels behind it have been difficult to identify. We examine an important mechanism which could be responsible for the positive effects of homeownership, namely its role in providing material security in old age. Using data from 15 European countries, we analyse the relationship between homeownership and material security, as measured through subjective evaluation of the likelihood of being better or worse off in the future. We find that homeowners have a higher level of material security than renters, and this association is especially strong for those living in big cities. For this subsample, in comparison to renters, owning a property in the top quartile of the home value distribution is associated with an increase in the probability of expecting to be better off in the future by as much as 43%. We interpret the results as support for the argument that homeownership offers a very particular form of material security, which, through reduction of perceived material risks, may be behind its positive implications for well-being.
+		  </div>
+      </div>
+	  
+	  <!-- PAPER 3 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Baltic Journal of Economics, 2024</span>
+        </div>
+        <h3><a href="https://doi.org/10.1080/1406099X.2024.2426918" target="_blank">Patterns of harassment and violence against women in Central and Eastern Europe. The role of the socio-economic context and gender norms in international comparisons</a></h3>
+        <p class="coauthors">with K. Trzcinski and M. Myck</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://zenodo.org/records/14031463" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          We use data from an international survey conducted in eight countries of Central and Eastern Europe and apply the method of multivariate reweighting to study the role of socio-economic characteristics and gender norms for the extent of underreporting of the prevalence of more discreet forms of gender-based abuse and harassment. We find that gender norms and attitudes towards abuse are responsible for a large part of the underreporting of harassment in Georgia and Russia, while differences in socio-economic characteristics are the key driving factors behind the underestimated levels of harassment in Belarus. We argue that a better understanding of the cross-country variation in the scale of discriminative behaviours against women needs to be based on a careful methodological design of internationally comparable surveys. In countries with high gender inequalities there is a clear need for policies aimed at increasing awareness and sensitivity towards more discreet abusive behaviours towards women.
+		  </div>
+      </div>
+
+	  <!-- PAPER 4 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Journal of Happiness Studies, 2023</span>
+        </div>
+        <h3><a href="https://doi.org/10.1007/s10902-023-00622-w" target="_blank">Home alone: Widows’ well-being and time</a></h3>
+        <p class="coauthors">with M. Adena, D. Hamermesh, and M. Myck</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://repec.iza.org/dp14881.pdf" target="_blank" class="iza-btn">IZA DP 14881</a>
+		<a href="https://data.mendeley.com/drafts/9xfgfrywcm" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Using data from the Survey of Health, Ageing and Retirement in Europe (SHARE, 2004–17) and time diaries from Poland (2013), the U.S. (2006–16), the U.K. (2014–15) and France (2009–10), we examine differences between widowed and partnered older women in well-being and its development in widowhood. Most importantly, our analysis accounts for time use, an aspect which has not been studied previously. We trace the evolution of well-being of women who become widowed by comparing them with their matched non-widowed ‘statistical twins’ and examine the role of an exceptionally broad set of potential moderators of widowhood’s impact on well-being. We confirm a dramatic decrease in mental health and life satisfaction after the loss of partner, followed by a slow partial recovery over a 5-year period. An extensive set of controls recorded prior to widowhood, including detailed family ties and social networks, provides little help in explaining the deterioration in well-being. Unique data from time-diaries kept by older women in several European countries and the U.S. tell us why: the key factor behind widows’ reduced well-being is increased time spent alone.
+		  </div>
+      </div>
+	  
+	  	  <!-- PAPER 5 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">BMC Public Health, 2023</span>
+        </div>
+        <h3><a href="https://doi.org/10.1186/s12889-022-14909-9" target="_blank">Deaths during the first year of the COVID-19 pandemic: Insights from regional patterns in Germany and Poland</a></h3>
+        <p class="coauthors">with M. Myck, C. Garten, A. Król, and M. Brandt</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://freepolicybriefs.org/2023/02/20/regional-patterns-covid19-mortality/" target="_blank" class="policy-brief-btn">Policy Brief</a>
+		<a href="https://freepolicybriefs.org/2020/06/18/covid-19-healthcare-resources/" target="_blank" class="policy-brief-btn">Policy Paper</a>
+		<a href="https://zenodo.org/records/7529741" target="_blank" class="replication-btn">Replication Code</a>
+		<a href="https://zenodo.org/records/7502178" target="_blank" class="replication-btn">Dataset</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          <strong>Background</strong> Given the nature of the spread of SARS-CoV-2, strong regional patterns in the fatal consequences of the COVID-19 pandemic related to local characteristics such as population and health care infrastructures were to be expected. In this paper we conduct a detailed examination of the spatial correlation of deaths in the first year of the pandemic in two neighbouring countries – Germany and Poland, which, among high income countries, seem particularly different in terms of the death toll associated with the COVID-19 pandemic. The analysis aims to yield evidence that spatial patterns of mortality can provide important clues as to the reasons behind significant differences in the consequences of the COVID-19 pandemic in these two countries. <strong>Methods</strong> Based on official health and population statistics on the level of counties, we explore the spatial nature of mortality in 2020 in the two countries – which, as we show, reflects important contextual differences. We investigate three different measures of deaths: the officially recorded COVID-19 deaths, the total values of excessive deaths and the difference between the two. We link them to important pre-pandemic regional characteristics such as population, health care and economic conditions in multivariate spatial autoregressive models. From the point of view of pandemic related fatalities we stress the distinction between direct and indirect consequences of COVID-19, separating the latter further into two types, the spatial nature of which is likely to differ. <strong>Results</strong> The COVID-19 pandemic led to much more excess deaths in Poland than in Germany. Detailed spatial analysis of deaths at the regional level shows a consistent pattern of deaths officially registered as related to COVID-19. For excess deaths, however, we find strong spatial correlation in Germany but little such evidence in Poland. <strong>Conclusions</strong> In contrast to Germany, for Poland we do not observe the expected spatial pattern of total excess deaths and the excess deaths over and above the official COVID-19 deaths. This difference cannot be explained by pre-pandemic regional factors such as economic and population structures or by healthcare infrastructure. The findings point to the need for alternative explanations related to the Polish policy reaction to the pandemic and failures in the areas of healthcare and public health, which resulted in a massive loss of life.</div>
+      </div>
+	  
+	  <!-- PAPER 6 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Economics of Transition and Institutional Change, 2023</span>
+        </div>
+        <h3><a href="https://onlinelibrary.wiley.com/doi/10.1111/ecot.12381" target="_blank">Parental gender preferences in Central and Eastern Europe and differential early life disadvantages</a></h3>
+        <p class="coauthors">with M. Myck and I. Wowczko</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://docs.iza.org/dp14244.pdf" target="_blank" class="iza-btn">IZA DP 14244</a>
+		<a href="https://zenodo.org/records/7846011" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Parental gender preferences may affect partnership decisions and as a result lead to early life disadvantages. We study these preferences in five post-communist countries of Central and Eastern Europe, a region with strong traditional gender norms and persisting inequalities between women and men in labour market outcomes. Using subsamples of census from Belarus, Hungary, Poland, Romania and Russia around 2000 and 2010, we follow Dahl and Moretti (2008), The demand for sons, to examine the effect of the gender of the first-born child(ren) on fertility decisions and relationship stability of their parents. We only find strong evidence of ‘boy preferences’ in fertility decisions in the cases of Romania and Russia. However, unlike Dahl and Moretti (2008), The demand for sons, for the US, we cannot confirm a relationship between the children's gender and parental partnership decisions. This is the case for all examined Central and Eastern European countries, as well as for a number of countries from Western Europe. The cases of Romania and Russia raise questions about other potential consequences of the documented gender preferences. We argue that our approach can be applied more broadly to identify other countries characterised by parental gender preferences, and to motivate further examination of different forms of gender driven early life disadvantages.</div>
+      </div>
+	  
+	  	  <!-- PAPER 7 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Social Science & Medicine, 2022</span>
+        </div>
+        <h3><a href="https://doi.org/10.1016/j.socscimed.2022.114791" target="_blank">Healthier over time? Period effects in health among older Europeans in a step-wise approach to identification</a></h3>
+        <p class="coauthors">with M. Myck</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://data.mendeley.com/drafts/hvshn2p4dv" target="_blank" class="replication-btn">Replication Code</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          We examine changes in the level of physical health using longitudinal data on people aged 50+ from nine European countries covering the years from 2004 to 2017. For this purpose we develop a novel approach to identify age, period and cohort effects, which, in contrast to methods relying on mechanical restrictions, uses a step-wise estimation combining information on physical health with data on cognitive abilities. The approach relies on two important assumptions. First, we estimate relative differences between cohorts in cognitive abilities assuming that only age and cohort effects are responsible for their evolution. We then use the estimated proportional cohort differences to restrict the differences between cohorts in health development. The method is applied to the dynamics of four measures of poor health: weak grip strength, limitations in mobility, in activities of daily living (ADL) and in instrumental activities of daily living (IADL). Our results suggest insignificant or adverse period effects for the evolution of physical health. For example, the difference in likelihood of poor health as measured through weak grip strength between 2004 and 2017 is 2.1 percentage points, p.p., (95% CI -4.3, 8.4), and the corresponding numbers for the other three measures are respectively: 2.0 p.p. (CI -1.6, 5.6); 2.2 p.p. (CI -0.2, 4.7) and 3.0 p.p. (CI 0.3, 5.8). These estimates, which reflect the implications of time over the period of 14 years, are relatively low, but they highlight the surprising fact that any improvements in health in the examined period have been driven essentially by cohort effects. Our evidence is consistent with some earlier studies and sheds new light on recent (pre-pandemic) trends in life expectancy. It also raises questions concerning efficacy of healthcare and equal access to high quality care – the factors one would consider as important determinants of period effects in health.
+		  </div>
+		  </div>
+		  
+		  	  	  <!-- PAPER 8 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Journal of Aging and Health, 2020</span>
+        </div>
+        <h3><a href="https://doi.org/10.1177/0898264319826417" target="_blank">Implications of Social and Material Deprivation for Changes in Health of Older People</a></h3>
+        <p class="coauthors">with M. Myck and M. Najsztub</p>
+        <!-- delete the line above if you have no co-authors -->
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          <strong>Objective:</strong> We use the panel structure of the Survey of Health, Ageing and Retirement in Europe (SHARE) data for 14 countries to examine the implications of material and social deprivation for health deterioration in old age and mortality. <strong>Method:</strong> To minimize the potential endogeneity bias, we examine the relationship between deprivation and changes in health rather than levels of health. We include a substantial set of fixed “initial conditions,” and extend the controls with health measures, as observed at the initial period. <strong>Results:</strong> The results of the probit regression suggest a strong and statistically significant relationship between measures of material and social deprivation and changes in physical and mental health. Mortality is only affected by the social dimension of deprivation. <strong>Discussion:</strong> Treating material and social deprivation separately rather than as a single social exclusion indicator allows for more specific identification of the role of the two dimensions, which might be important for policy decisions.
+		  </div>
+		  </div>
+		  
+		  	        <!-- PAPER 9 — Published. EDIT: title, href (DOI), journal, year, co-authors, abstract -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-published">Published</span>
+          <span class="paper-venue">Economics of Transition, 2018</span>
+        </div>
+        <h3><a href="https://doi.org/10.1111/ecot.12161" target="_blank">Shocked by therapy? Unemployment in the first years of the socio-economic transition in Poland and its long-term consequences</a></h3>
+        <p class="coauthors">with M. Myck</p>
+        <!-- delete the line above if you have no co-authors -->
+		<a href="https://freepolicybriefs.org/2018/12/03/unemployment-in-transition-and-its-long-term-consequences/" target="_blank" class="policy-brief-btn">Policy Brief</a>
+		<a href="https://docs.iza.org/dp11342.pdf" target="_blank" class="iza-btn">IZA DP 11342</a>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          We examine the long-term implications of unemployment for material conditions and well-being using the Polish sample from the Survey of Health, Ageing and Retirement in Europe (SHARE). Retrospective data from the SHARELIFE survey are used to reconstruct labour market experiences across the threshold of the socio-economic transformation from a centrally planned to a free market economy in Poland. These individual experiences are matched with outcomes observed in the survey about 20 years later to examine their correlation with unemployment at the time of the transition. We find that becoming unemployed in the early 1990s correlates significantly with income, assets and a number of measures of well-being recorded in 2007 and 2012. Using plant closures to reflect exogenous changes to labour market status at the time of the transition, we are able to confirm the causal effect of unemployment on income and house ownership 20 years later, but find no evidence for a long-term causal relationship between unemployment and such measures of well-being as life satisfaction, depression and subjective assessment of material conditions.</div>
+      </div>
+	  
+      <!-- PAPER 2 — Working paper. EDIT: title, href, co-authors, abstract -->
+      <div class="paper" style="display:none">
+        <div class="paper-meta">
+          <span class="paper-status status-working">Working Paper</span>
+        </div>
+        <h3><a href="https://doi.org/XXXXX" target="_blank">Your Second Paper Title Goes Here</a></h3>
+        <p class="coauthors">with Co-Author Name (Institution)</p>
+        <button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Paste your abstract here.
+        </div>
+      </div>
+
+      <!-- PAPER 1 — Work in progress (no link needed). EDIT: title, co-authors -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-progress">In Progress</span>
+        </div>
+        <h3>Dissatisfied and Gone? Gendered Patterns in Job Satisfaction and Employment Histories</h3>
+		<button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Existing evidence consistently reports higher job satisfaction among women, but typically focuses on satisfaction with the job held at the time of survey. This approach overlooks individuals who are not employed when surveyed — most often women, who are more likely either to enter the labour market later or exit earlier in their careers. This study addresses this limitation by examining job satisfaction over the working life. Using retrospective data from the Survey of Health, Ageing and Retirement in Europe (SHARE), we analyse gender differences in satisfaction with the main job across the careers of individuals who ever worked, covering 26 European countries. We find that, once the full employment history is accounted for, women in fact report lower job satisfaction than men in the job they identify as central to their working lives. This pattern appears to be shaped by regional differences, likely reflecting variation in prevailing gender norms across societies. We further investigate life-course employment histories in order to examine the behavioral consequences of job dissatisfaction over time. Our analysis reveals that dissatisfaction may have different long-run consequences with respect to labor market attachment by gender and institutional context.
+        </div>
+      </div>
+	  
+	        <!-- PAPER 2 — Work in progress (no link needed). EDIT: title, co-authors -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-progress">In Progress</span>
+        </div>
+        <h3>Across-country differences in the prevalence of self-reported Long COVID symptoms among middle-aged and older adults participating in SHARE</h3>
+        <p class="coauthors">with S. Cuschieri, M. Kozela, A. Chłoń-Domińczak, P. Wilk</p>
+		<button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Long COVID, characterized by symptoms lasting beyond the acute infection phase, has shown varying prevalence across European countries. Despite ongoing research, the factors driving these cross-country differences remain unclear. This study investigates the role of country-level structural factors in explaining these geographic differences in self-reported Long COVID symptoms among adults aged 50 years and older across 27 European countries. Data from the 2020-2021 Survey of Health, Ageing and Retirement in Europe (SHARE) Corona Surveys were analyzed. Multi-level logistic regression was used to assess the association between country-level structural factors and self-reported Long COVID symptoms, controlling for individual-level characteristics. The study reveals substantial cross-country variation in self-reported Long COVID symptoms in Europe, mainly explained by structural factors rather than by the characteristics of their residents. Higher healthcare expenditure and lower air pollution, in particular, were linked to lower likelihood of reporting Long COVID symptoms. These findings highlight the importance of healthcare investment and environmental health in mitigating Long COVID symptoms, although further research is needed to explore additional individual- and country-level factors.
+        </div>
+      </div>
+	  
+	     <!-- PAPER 3 — Work in progress (no link needed). EDIT: title, co-authors -->
+      <div class="paper">
+        <div class="paper-meta">
+          <span class="paper-status status-progress">In Progress</span>
+        </div>
+        <h3>Disability benefit regulations and labour market dynamics during the transition in Central and Eastern Europe</h3>
+        <p class="coauthors">with M. Myck</p>
+		<button class="abstract-toggle" onclick="toggleAbstract(this)">+ Abstract</button>
+        <div class="abstract">
+          Long COVID, characterized by symptoms lasting beyond the acute infection phase, has shown varying prevalence across European countries. Despite ongoing research, the factors driving these cross-country differences remain unclear. This study investigates the role of country-level structural factors in explaining these geographic differences in self-reported Long COVID symptoms among adults aged 50 years and older across 27 European countries. Data from the 2020-2021 Survey of Health, Ageing and Retirement in Europe (SHARE) Corona Surveys were analyzed. Multi-level logistic regression was used to assess the association between country-level structural factors and self-reported Long COVID symptoms, controlling for individual-level characteristics. The study reveals substantial cross-country variation in self-reported Long COVID symptoms in Europe, mainly explained by structural factors rather than by the characteristics of their residents. Higher healthcare expenditure and lower air pollution, in particular, were linked to lower likelihood of reporting Long COVID symptoms. These findings highlight the importance of healthcare investment and environmental health in mitigating Long COVID symptoms, although further research is needed to explore additional individual- and country-level factors.
+        </div>
+      </div>
+
+      <!-- To add more papers: copy any <div class="paper">...</div> block and paste it here.
+           Use status-published / status-working / status-progress to match the paper's status. -->
+
+    </section>
+
+
+
+  </main>
+
+  <footer>&copy; 2026 Monika Oczkowska</footer>
+
+  <script>
+    function toggleAbstract(btn) {
+      const abstract = btn.nextElementSibling;
+      abstract.classList.toggle('open');
+      btn.textContent = abstract.classList.contains('open') ? '− Abstract' : '+ Abstract';
+    }
+  </script>
+
+</body>
+</html>
